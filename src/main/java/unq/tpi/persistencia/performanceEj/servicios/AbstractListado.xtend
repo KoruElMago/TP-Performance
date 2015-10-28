@@ -5,6 +5,8 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
 import unq.tpi.persistencia.util.SessionManager
+import java.util.List
+import org.hibernate.Query
 
 /**
  * Clase base para la generacion de reportes.
@@ -28,6 +30,9 @@ abstract class AbstractListado {
 	 * Los clientes invocaran este metodo para generar un listado nuevo. 
 	 * Este metodo no es thread-safe.
 	 */
+	 
+	 //Este metodo debe retornar el listado
+	 /*
 	def void generarListado() {
 		SessionManager.runInSession([
 			try {
@@ -41,6 +46,25 @@ abstract class AbstractListado {
 			return null;
 		])
 	}
+	
+	* 
+	*/
+	
+	def generarListado() {
+		SessionManager.runInSession([
+			try {
+				this.openFileWriter();
+				this.doListado()
+			} catch (Exception e) {
+				throw new RuntimeException(e)
+			} finally {
+				this.closeFileWriter();
+			}
+			return null;
+		])
+	}
+	
+	
 	
 	/**
 	 * Este metodo sera invocado por generarListado (tempateMethod) en el

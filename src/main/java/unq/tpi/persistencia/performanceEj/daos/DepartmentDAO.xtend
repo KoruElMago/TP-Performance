@@ -10,6 +10,7 @@ class DepartmentDAO {
 		val session = SessionManager.getSession()
 		session.createQuery("from Department where name = :name")
 				.setParameter("name", name).uniqueResult() as Department
+		
 	}
 
 	def getByCode(String num) {
@@ -19,7 +20,9 @@ class DepartmentDAO {
 
 	def getAll() {
 		val session = SessionManager.getSession()
-		session.createCriteria(Department).list() as List<Department>
+		//own
+		//session.createCriteria(Department).list() as List<Department>
+		session.createQuery("from Department").list() as List<Department>
 	}
 
 }

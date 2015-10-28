@@ -8,7 +8,7 @@ class EmployeeDAO {
 
 	def getByName(String name, String lastName) {
 		val session = SessionManager.getSession()
-		session.createQuery("from Employee where firstName = :name and lastName = :lastName")
+		session.createQuery("from Employee emp where emp.firstName = :name and emp.lastName = :lastName")
 				.setParameter("name", name)
 				.setParameter("lastName", lastName)
 				.uniqueResult() as Employee
@@ -16,12 +16,21 @@ class EmployeeDAO {
 
 	def getAll() {
 		val session = SessionManager.getSession()
-		session.createCriteria(Employee).list() as List<Employee>
+		//own
+		//session.createCriteria(Employee).list() as List<Employee>
+		session.createQuery("from Employee").list as List<Employee>
 	}
 
 	def getByCode(int id) {
 		val session = SessionManager.getSession()
 		session.load(Employee, id) as Employee
+	}
+	
+	def getNameAndSalary(){
+	val session = SessionManager.getSession()
+		val query = session.createQuery("select salary.employee from Salary as salary order by salary.amount")
+		query.maxResults = 10
+		query.list as List<Employee>
 	}
 
 }
